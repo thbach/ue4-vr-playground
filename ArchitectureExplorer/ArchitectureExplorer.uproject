@@ -7,7 +7,16 @@
 		{
 			"Name": "ArchitectureExplorer",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "UdpMessaging",
+			"Enabled": false
 		}
 	]
 }

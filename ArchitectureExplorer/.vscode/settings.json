@@ -2,6 +2,8 @@
 	"files.exclude": {
 		"E:/200606 - ue4 vr playground/ArchitectureExplorer/.vscode": true,
 		"E:/200606 - ue4 vr playground/ArchitectureExplorer/Content": true,
-		"E:/200606 - ue4 vr playground/ArchitectureExplorer/Intermediate": true
+		"E:/200606 - ue4 vr playground/ArchitectureExplorer/DerivedDataCache": true,
+		"E:/200606 - ue4 vr playground/ArchitectureExplorer/Intermediate": true,
+		"E:/200606 - ue4 vr playground/ArchitectureExplorer/Saved": true
 	}
 }
