@@ -33,9 +33,27 @@ private:
 	class UCameraComponent* Camera;
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* VRRoot;
+	UPROPERTY(VisibleAnywhere)
+	class UStaticMeshComponent* DestinationMarker;
 
+	
+	UPROPERTY(EditAnywhere)
+	float MaxTeleportDistance = 1000;
+	UPROPERTY(EditAnywhere)
+	float TeleportFadeTime = 1;
+	UPROPERTY(EditAnywhere)
+	FVector TeleportProjectionExtent = FVector(100,100,100);
+
+private:
 
 	void MoveForward(float AxisValue); 
 	void MoveRight(float AxisValue);
+	void BeginTeleport();
+	void EndTeleport();
+	void CameraFade(float FromAlpha, float ToAlpha);
+
+	bool UpdateDestinationMarker();
+	bool FindDestinationMarker(FVector &OutLocation);
+	
 
 };
