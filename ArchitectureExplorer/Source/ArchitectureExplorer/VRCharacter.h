@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "VRCharacter.generated.h"
 
+
 UCLASS()
 class ARCHITECTUREEXPLORER_API AVRCharacter : public ACharacter
 {
@@ -34,7 +35,18 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* VRRoot;
 	UPROPERTY(VisibleAnywhere)
+	class USplineComponent* TeleportPath;	
+	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* DestinationMarker;
+	
+	UPROPERTY(EditDefaultsOnly)	
+	TSubclassOf<class AHandController> HandControllerClass;	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AHandController> HandControllerClassRight;
+	UPROPERTY(VisibleAnywhere)
+	class AHandController* LeftController;
+	UPROPERTY(VisibleAnywhere)
+	class AHandController* RightController;	
 
 	UPROPERTY(VisibleAnywhere)
 	class UPostProcessComponent* PostProcessComponent;
@@ -45,9 +57,21 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UCurveFloat* RadiusVsVelocity;
 
+	UPROPERTY(VisibleAnywherE)
+	TArray<class USplineMeshComponent*> TeleportArcMeshPool;	
+	UPROPERTY(EditDefaultsOnly)
+	class UStaticMesh* TeleportArcMesh;	
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterialInterface* TeleportArcMaterial;
 	
+private:
+
 	UPROPERTY(EditAnywhere)
 	float MaxTeleportDistance = 1000;
+	UPROPERTY(EditAnywhere)
+	float TeleportProjectileRadius = 10;	
+	UPROPERTY(EditAnywhere)
+	float TeleportProjectileSpeed = 800;
 	UPROPERTY(EditAnywhere)
 	float TeleportFadeTime = 1;
 	UPROPERTY(EditAnywhere)
@@ -64,12 +88,11 @@ private:
 	void CameraFade(float FromAlpha, float ToAlpha);
 
 	bool UpdateDestinationMarker();
-	bool FindDestinationMarker(FVector &OutLocation);
+	bool ShootDestinationMarker(TArray<FVector> &OutPath , FVector &OutLocation);	
 
 	void UpdateBlinkers();
-	FVector2D GetBlinkerCenter();
-
-	
-	
+	void UpdateSpline(const TArray<FVector> &Path);
+	void DrawTeleportPath(const TArray<FVector> &Path);
+	FVector2D GetBlinkerCenter();	
 
 };
