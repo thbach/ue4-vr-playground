@@ -57,7 +57,8 @@ void AVRCharacter::BeginPlay()
 	if (BlinkerMaterialBase)
 	{
 		BlinkerMaterialInstance = UMaterialInstanceDynamic::Create(BlinkerMaterialBase, this);
-		PostProcessComponent->AddOrUpdateBlendable(BlinkerMaterialInstance);
+		// Turn on post process
+		// PostProcessComponent->AddOrUpdateBlendable(BlinkerMaterialInstance);
 	}	
 
 	// Setup Controller Actors
@@ -75,6 +76,7 @@ void AVRCharacter::BeginPlay()
 		RightController->SetLeftHand(false);			
 		RightController->SetOwner(this);		
 	}	
+	LeftController->PairController(RightController);
 }
 
 // Called every frame
@@ -88,11 +90,11 @@ void AVRCharacter::Tick(float DeltaTime)
 	AddActorWorldOffset(NewCameraOffset);
 	VRRoot->AddWorldOffset(-NewCameraOffset);
 
-	UpdateDestinationMarker();
+	if (bTeleportButtonHeld) UpdateDestinationMarker();	
 
 }
 
-bool AVRCharacter::UpdateDestinationMarker() 
+void AVRCharacter::UpdateDestinationMarker() 
 {
 	TArray<FVector> Path;	
 	FVector Location;
@@ -109,7 +111,17 @@ bool AVRCharacter::UpdateDestinationMarker()
 		DrawTeleportPath(EmptyPath);
 	}
 	
-	return true;
+	// return true;
+}
+
+void AVRCharacter::HideDestinationMarker() 
+{
+	bTeleportButtonHeld = false;	
+	DestinationMarker->SetVisibility(false);	
+	for (USplineMeshComponent* SplineMesh : TeleportArcMeshPool)
+	{
+		SplineMesh->SetVisibility(false);
+	}	
 }
 
 bool AVRCharacter::ShootDestinationMarker(TArray<FVector> &OutPath , FVector &OutLocation)
@@ -245,7 +257,12 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AVRCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AVRCharacter::MoveRight);
-	PlayerInputComponent->BindAction(TEXT("Teleport"), IE_Pressed, this, &AVRCharacter::BeginTeleport);
+	PlayerInputComponent->BindAction(TEXT("Teleport"), IE_Repeat, this, &AVRCharacter::BeginTeleportHeld);
+	PlayerInputComponent->BindAction(TEXT("Teleport"), IE_Released, this, &AVRCharacter::BeginTeleport);	
+	PlayerInputComponent->BindAction(TEXT("GripLeft"), IE_Pressed, this, &AVRCharacter::GripLeft);	
+	PlayerInputComponent->BindAction(TEXT("GripRight"), IE_Pressed, this, &AVRCharacter::GripRight);	
+	PlayerInputComponent->BindAction(TEXT("GripLeft"), IE_Released, this, &AVRCharacter::ReleaseLeft);	
+	PlayerInputComponent->BindAction(TEXT("GripRight"), IE_Released, this, &AVRCharacter::ReleaseRight);				
 }
 
 
@@ -269,8 +286,14 @@ void AVRCharacter::BeginTeleport()
 	GetWorldTimerManager().SetTimer(Handle, this, &AVRCharacter::EndTeleport, TeleportFadeTime);	
 }
 
-void AVRCharacter::EndTeleport() 
+void AVRCharacter::BeginTeleportHeld() 
 {
+	bTeleportButtonHeld = true;
+}
+
+void AVRCharacter::EndTeleport() 
+{	
+	HideDestinationMarker();
 	FVector Location = DestinationMarker->GetComponentLocation();
 	Location += GetCapsuleComponent()->GetScaledCapsuleHalfHeight() * GetActorUpVector();
 	// Location.Z = Location;

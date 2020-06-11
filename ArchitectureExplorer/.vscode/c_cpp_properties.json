@@ -204,6 +204,8 @@
                 "C:\\Program Files\\UE_4.25\\Engine\\Source\\Runtime\\ClothingSystemRuntimeInterface\\Public",
                 "E:\\200606 - ue4 vr playground\\ArchitectureExplorer\\Intermediate\\Build\\Win64\\UE4Editor\\Inc\\ArchitectureExplorer",
                 "E:\\200606 - ue4 vr playground\\ArchitectureExplorer\\Source",
+                "C:\\Program Files\\UE_4.25\\Engine\\Intermediate\\Build\\Win64\\UE4Editor\\Inc\\AugmentedReality",
+                "C:\\Program Files\\UE_4.25\\Engine\\Source\\Runtime\\AugmentedReality\\Public",
                 "C:\\Program Files\\UE_4.25\\Engine\\Source\\ThirdParty\\PhysX3\\PxShared\\include",
                 "C:\\Program Files\\UE_4.25\\Engine\\Source\\ThirdParty\\PhysX3\\PxShared\\include\\cudamanager",
                 "C:\\Program Files\\UE_4.25\\Engine\\Source\\ThirdParty\\PhysX3\\PxShared\\include\\filebuf",

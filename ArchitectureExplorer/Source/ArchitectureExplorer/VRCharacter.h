@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "HandController.h"
 #include "VRCharacter.generated.h"
 
 
@@ -44,9 +45,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AHandController> HandControllerClassRight;
 	UPROPERTY(VisibleAnywhere)
-	class AHandController* LeftController;
+	AHandController* LeftController;
 	UPROPERTY(VisibleAnywhere)
-	class AHandController* RightController;	
+	AHandController* RightController;	
 
 	UPROPERTY(VisibleAnywhere)
 	class UPostProcessComponent* PostProcessComponent;
@@ -83,16 +84,25 @@ private:
 
 	void MoveForward(float AxisValue); 
 	void MoveRight(float AxisValue);
+	void GripLeft() { LeftController->Grip(); }
+	void ReleaseLeft() { LeftController->Release(); }
+	void GripRight() { RightController->Grip(); }
+	void ReleaseRight() { RightController->Release(); }
 	void BeginTeleport();
+	void BeginTeleportHeld();
 	void EndTeleport();
 	void CameraFade(float FromAlpha, float ToAlpha);
 
-	bool UpdateDestinationMarker();
+	void UpdateDestinationMarker();
+	void HideDestinationMarker();
 	bool ShootDestinationMarker(TArray<FVector> &OutPath , FVector &OutLocation);	
 
 	void UpdateBlinkers();
 	void UpdateSpline(const TArray<FVector> &Path);
 	void DrawTeleportPath(const TArray<FVector> &Path);
 	FVector2D GetBlinkerCenter();	
+
+	// State
+	bool bTeleportButtonHeld = false;
 
 };

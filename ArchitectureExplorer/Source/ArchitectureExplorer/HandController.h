@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "InputCoreTypes.h"
 #include "HandController.generated.h"
 
 UCLASS()
@@ -15,7 +16,11 @@ public:
 	// Sets default values for this actor's properties
 	AHandController();
 
+	void PairController(AHandController* Controller);
 	void SetLeftHand(bool Hand);
+	void Grip();
+	void Release();
+	void SetIsClimbing(bool IsClimbing);
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,11 +35,32 @@ private:
 	// Default sub object
 	UPROPERTY(VisibleAnywhere)
 	class UMotionControllerComponent* MotionController;
+	UPROPERTY(VisibleAnywhere)
+	class UMotionControllerComponent* MotionControllerComponent;
 
+	// Params
 	UPROPERTY(EditAnywhere)
 	bool bIsLeftHandSource = false;	
 
-	void SetHand();
+	UPROPERTY(EditDefaultsOnly)
+	class UHapticFeedbackEffect_Base* CanClimbHapticEffect;
 
+	// Callbacks
+	UFUNCTION()
+	void ActorBeginOverLap(AActor* OverlappedActor, AActor* OtherActor);
+	UFUNCTION()
+	void ActorEndOverLap(AActor* OverlappedActor, AActor* OtherActor);
+
+	// Helpers
+
+	bool CanClimb() const;
+	void SetHand();	
+
+	// State
+	bool bCanClimb = false;
+	bool bIsClimbing = false;
+	FVector ClimbingStartLocation;
+
+	AHandController* OtherController;
 
 };
