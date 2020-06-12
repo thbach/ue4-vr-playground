@@ -28,6 +28,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Projectile class to spawn
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AVRProjectile> ProjectileClass;
+
 private:
 
 	// Setup Camera
@@ -58,12 +62,15 @@ private:
 	UPROPERTY(EditAnywhere)
 	class UCurveFloat* RadiusVsVelocity;
 
-	UPROPERTY(VisibleAnywherE)
+	UPROPERTY(VisibleAnywhere)
 	TArray<class USplineMeshComponent*> TeleportArcMeshPool;	
 	UPROPERTY(EditDefaultsOnly)
 	class UStaticMesh* TeleportArcMesh;	
 	UPROPERTY(EditDefaultsOnly)
 	class UMaterialInterface* TeleportArcMaterial;
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<class AVRProjectile*> ProjectilePool;		
 	
 private:
 
@@ -91,6 +98,7 @@ private:
 	void BeginTeleport();
 	void BeginTeleportHeld();
 	void EndTeleport();
+	void Fire();
 	void CameraFade(float FromAlpha, float ToAlpha);
 
 	void UpdateDestinationMarker();

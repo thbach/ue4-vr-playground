@@ -20,6 +20,8 @@
 #include "Components/SplineMeshComponent.h"
 #include "MotionControllerComponent.h"
 #include "Engine/World.h"
+#include "VRCharacter.h"
+#include "VRProjectile.h"
 #include "HandController.h"
 
 
@@ -262,7 +264,8 @@ void AVRCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("GripLeft"), IE_Pressed, this, &AVRCharacter::GripLeft);	
 	PlayerInputComponent->BindAction(TEXT("GripRight"), IE_Pressed, this, &AVRCharacter::GripRight);	
 	PlayerInputComponent->BindAction(TEXT("GripLeft"), IE_Released, this, &AVRCharacter::ReleaseLeft);	
-	PlayerInputComponent->BindAction(TEXT("GripRight"), IE_Released, this, &AVRCharacter::ReleaseRight);				
+	PlayerInputComponent->BindAction(TEXT("GripRight"), IE_Released, this, &AVRCharacter::ReleaseRight);	
+	PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AVRCharacter::Fire);				
 }
 
 
@@ -274,7 +277,7 @@ void AVRCharacter::MoveForward(float AxisValue)
 
 void AVRCharacter::MoveRight(float AxisValue) 
 {
-	AddMovementInput(Camera->GetRightVector() * AxisValue);
+	AddMovementInput(Camera->GetRightVector() * AxisValue);	
 	UpdateBlinkers();
 }
 
@@ -300,6 +303,25 @@ void AVRCharacter::EndTeleport()
 	SetActorLocation(Location);
 	CameraFade(1,0);
 }
+
+void AVRCharacter::Fire() 
+{
+	FVector MuzzleLocation = RightController->GetActorLocation();
+	FRotator MuzzleRotation = RightController->GetActorRotation();
+	// Skew the aim to be slightly upwards.
+	MuzzleRotation.Pitch += 10.0f;
+	MuzzleRotation.Yaw += 20.0f;
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = this;	
+	AVRProjectile* Projectile = GetWorld()->SpawnActor<AVRProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, SpawnParams);
+	if (Projectile)
+	{
+		Projectile->FireInDirection(MuzzleRotation.Vector());				
+	}   
+
+}
+
 
 void AVRCharacter::CameraFade(float FromAlpha, float ToAlpha) 
 {
