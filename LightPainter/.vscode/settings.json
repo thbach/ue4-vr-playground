@@ -1,0 +1,7 @@
+{
+	"files.exclude": {
+		"E:/200606 - ue4 vr playground/LightPainter/.vscode": true,
+		"E:/200606 - ue4 vr playground/LightPainter/Content": true,
+		"E:/200606 - ue4 vr playground/LightPainter/Intermediate": true
+	}
+}

@@ -1,0 +1,128 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "LightPainter (Debug)",
+			"request": "launch",
+			"preLaunchTask": "LightPainter Win64 Debug Build",
+			"program": "E:\\200606 - ue4 vr playground\\LightPainter\\Binaries\\Win64\\UE4-Win64-Debug.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files\\UE_4.25",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files\\UE_4.25\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "LightPainter (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "LightPainter Win64 DebugGame Build",
+			"program": "E:\\200606 - ue4 vr playground\\LightPainter\\Binaries\\Win64\\UE4-Win64-DebugGame.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files\\UE_4.25",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files\\UE_4.25\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "LightPainter (Development)",
+			"request": "launch",
+			"preLaunchTask": "LightPainter Win64 Development Build",
+			"program": "E:\\200606 - ue4 vr playground\\LightPainter\\Binaries\\Win64\\UE4.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files\\UE_4.25",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files\\UE_4.25\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "LightPainter (Shipping)",
+			"request": "launch",
+			"preLaunchTask": "LightPainter Win64 Shipping Build",
+			"program": "E:\\200606 - ue4 vr playground\\LightPainter\\Binaries\\Win64\\UE4-Win64-Shipping.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files\\UE_4.25",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files\\UE_4.25\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "LightPainter (Test)",
+			"request": "launch",
+			"preLaunchTask": "LightPainter Win64 Test Build",
+			"program": "E:\\200606 - ue4 vr playground\\LightPainter\\Binaries\\Win64\\UE4-Win64-Test.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files\\UE_4.25",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files\\UE_4.25\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "LightPainterEditor (Debug)",
+			"request": "launch",
+			"preLaunchTask": "LightPainterEditor Win64 Debug Build",
+			"program": "C:\\Program Files\\UE_4.25\\Engine\\Binaries\\Win64\\UE4Editor-Win64-Debug.exe",
+			"args": [
+				"E:\\200606 - ue4 vr playground\\LightPainter\\LightPainter.uproject"
+			],
+			"cwd": "C:\\Program Files\\UE_4.25",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files\\UE_4.25\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "LightPainterEditor (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "LightPainterEditor Win64 DebugGame Build",
+			"program": "C:\\Program Files\\UE_4.25\\Engine\\Binaries\\Win64\\UE4Editor-Win64-DebugGame.exe",
+			"args": [
+				"E:\\200606 - ue4 vr playground\\LightPainter\\LightPainter.uproject"
+			],
+			"cwd": "C:\\Program Files\\UE_4.25",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files\\UE_4.25\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "LightPainterEditor (Development)",
+			"request": "launch",
+			"preLaunchTask": "LightPainterEditor Win64 Development Build",
+			"program": "C:\\Program Files\\UE_4.25\\Engine\\Binaries\\Win64\\UE4Editor.exe",
+			"args": [
+				"E:\\200606 - ue4 vr playground\\LightPainter\\LightPainter.uproject"
+			],
+			"cwd": "C:\\Program Files\\UE_4.25",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files\\UE_4.25\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "Generate Project Files",
+			"type": "clr",
+			"request": "launch",
+			"program": "C:\\Program Files\\UE_4.25\\Engine\\Binaries\\DotNET\\UnrealBuildTool.exe",
+			"console": "externalTerminal",
+			"args": [
+				"-projectfiles",
+				"-vscode",
+				"-project=\"E:\\200606 - ue4 vr playground\\LightPainter\\LightPainter.uproject\"",
+				"-game",
+				"-engine"
+			],
+			"internalConsoleOptions": "openOnSessionStart",
+			"cwd": "C:\\Program Files\\UE_4.25"
+		}
+	]
+}
