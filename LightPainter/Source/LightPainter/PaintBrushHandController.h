@@ -18,9 +18,8 @@ public:
 
 	APaintBrushHandController();
 
-	void SetLeftHand(bool Hand) { bIsLeftHand = Hand; SetHand(); }
-	void TriggerPressed();
-	void TriggerReleased();
+	void TriggerPressed() override;
+	void TriggerReleased() override;
 
 protected:
 
@@ -34,14 +33,10 @@ private:
 	// Config
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<AStroke> StrokeClass;
-	UPROPERTY(EditAnywhere)
-	bool bIsLeftHand = false;
+
 
 	// Components
-	UPROPERTY(VisibleAnywhere)
-	UMotionControllerComponent* MotionController;
-	UPROPERTY(VisibleAnywhere)
-	UMotionControllerComponent* MotionControllerComponent;
+
 
 	// State
 	AStroke* CurrentStroke;
@@ -50,5 +45,4 @@ private:
 
 
 	// functions
-	void SetHand();
 };

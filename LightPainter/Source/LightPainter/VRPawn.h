@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-#include "PaintBrushHandController.h"
+#include "HandControllerBase.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SceneComponent.h"
 #include "VRPawn.generated.h"
@@ -32,13 +32,13 @@ private:
 private:
 	// Config
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<APaintBrushHandController> HandControllerClass;
+	TSubclassOf<AHandControllerBase> HandControllerClass;
 
 	// Children
 	UPROPERTY(VisibleAnywhere)
-	APaintBrushHandController* LeftHandController;
+	AHandControllerBase* LeftHandController;
 	UPROPERTY(VisibleAnywhere)
-	APaintBrushHandController* RightHandController;
+	AHandControllerBase* RightHandController;
 
 	// functions
 	void RightTriggerPressed() { if (RightHandController) RightHandController->TriggerPressed(); }

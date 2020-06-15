@@ -9,9 +9,7 @@ APaintBrushHandController::APaintBrushHandController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	MotionController = CreateDefaultSubobject<UMotionControllerComponent>(TEXT("MotionController"));
-	MotionController->SetShowDeviceModel(true);
-	SetRootComponent(MotionController);
+
 }
 
 void APaintBrushHandController::TriggerPressed()
@@ -45,17 +43,4 @@ void APaintBrushHandController::Tick(float DeltaTime)
 
 }
 
-void APaintBrushHandController::SetHand()
-{
-	MotionControllerComponent = Cast<UMotionControllerComponent>(GetRootComponent());
-	if (MotionControllerComponent)
-	{
-		if (bIsLeftHand)
-		{
-			MotionControllerComponent->SetTrackingSource(EControllerHand::Left);
-			return;
-		}
-		MotionControllerComponent->SetTrackingSource(EControllerHand::Right);
-	}
-}
 

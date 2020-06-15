@@ -25,14 +25,14 @@ void AVRPawn::BeginPlay()
 
 	if (HandControllerClass)
 	{
-		LeftHandController = GetWorld()->SpawnActor<APaintBrushHandController>(HandControllerClass);
+		LeftHandController = GetWorld()->SpawnActor<AHandControllerBase>(HandControllerClass);
 		if (LeftHandController)
 		{
 			LeftHandController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 			LeftHandController->SetLeftHand(true);
 			LeftHandController->SetOwner(this);
 		}
-		RightHandController = GetWorld()->SpawnActor<APaintBrushHandController>(HandControllerClass);
+		RightHandController = GetWorld()->SpawnActor<AHandControllerBase>(HandControllerClass);
 		if (RightHandController)
 		{
 			RightHandController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
