@@ -2,7 +2,6 @@
 
 
 #include "VRPawn.h"
-#include "HandController.h"
 #include "Engine/World.h"
 #include "Saving/PainterSaveGame.h"
 #include "Components/InputComponent.h"
@@ -26,27 +25,27 @@ void AVRPawn::BeginPlay()
 
 	if (HandControllerClass)
 	{
-		LeftHandController = GetWorld()->SpawnActor<AHandController>(HandControllerClass);
+		LeftHandController = GetWorld()->SpawnActor<APaintBrushHandController>(HandControllerClass);
 		if (LeftHandController)
 		{
 			LeftHandController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 			LeftHandController->SetLeftHand(true);
 			LeftHandController->SetOwner(this);
 		}
-		RightHandController = GetWorld()->SpawnActor<AHandController>(HandControllerClass);
+		RightHandController = GetWorld()->SpawnActor<APaintBrushHandController>(HandControllerClass);
 		if (RightHandController)
 		{
 			RightHandController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 			RightHandController->SetLeftHand(false);
 			RightHandController->SetOwner(this);
-		}	
-	}		
+		}
+	}
 
 
 
 }
 
-void AVRPawn::SetupPlayerInputComponent(UInputComponent*  PlayerInputComponent) 
+void AVRPawn::SetupPlayerInputComponent(UInputComponent*  PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
@@ -57,23 +56,23 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent*  PlayerInputComponent)
 
 }
 
-void AVRPawn::Save() 
+void AVRPawn::Save()
 {
 	UPainterSaveGame* Painting = UPainterSaveGame::Create();
 	Painting->SerializeFromWorld(GetWorld());
-	Painting->Save();		
+	Painting->Save();
 }
 
-void AVRPawn::Load() 
+void AVRPawn::Load()
 {
 	UPainterSaveGame* Painting = UPainterSaveGame::Load();
 	if (Painting)
-	{		
-		Painting->DeserializeToWorld(GetWorld());		
+	{
+		Painting->DeserializeToWorld(GetWorld());
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("no saves"));
-	}				
+	}
 }
 

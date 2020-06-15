@@ -4,35 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "MotionControllerComponent.h"
-#include "Stroke.h"
-#include "HandController.generated.h"
+#include "HandControllerBase.generated.h"
 
 UCLASS()
-class LIGHTPAINTER_API AHandController : public AActor
+class LIGHTPAINTER_API AHandControllerBase : public AActor
 {
 	GENERATED_BODY()
 
 public:
-
-	AHandController();
+	// Sets default values for this actor's properties
+	AHandControllerBase();
 
 	void SetLeftHand(bool Hand) { bIsLeftHand = Hand; SetHand(); }
-	void TriggerPressed();
-	void TriggerReleased();
 
 protected:
-
+	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-
+	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 private:
 	// Config
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<AStroke> StrokeClass;
 	UPROPERTY(EditAnywhere)
 	bool bIsLeftHand = false;
 
@@ -42,12 +36,11 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UMotionControllerComponent* MotionControllerComponent;
 
-	// State
-	AStroke* CurrentStroke;
 
 
 
 
 	// functions
 	void SetHand();
+
 };
