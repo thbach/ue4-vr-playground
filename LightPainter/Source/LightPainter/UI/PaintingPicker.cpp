@@ -3,6 +3,8 @@
 
 #include "PaintingPicker.h"
 #include "PaintingPicker/PaintingGrid.h"
+#include "PaintingPicker/ActionBar.h"
+#include "../Saving/PainterSaveGame.h"
 #include "../Saving/PainterSaveGameIndex.h"
 
 
@@ -16,7 +18,7 @@ APaintingPicker::APaintingPicker()
 
 	PaintingGrid = CreateDefaultSubobject<UWidgetComponent>(TEXT("PaintingGrid"));
 	PaintingGrid->SetupAttachment(Root);
-	PaintingGrid->SetDrawSize(FVector2D(848, 560));
+	PaintingGrid->SetDrawSize(FVector2D(1000, 1000));
 	PaintingGrid->SetWorldLocation(FVector(249,0,-26));
 	PaintingGrid->SetWorldRotation(FRotator(0,180,0));
 	PaintingGrid->SetWorldScale3D(FVector(0.25));
@@ -30,16 +32,28 @@ APaintingPicker::APaintingPicker()
 
 }
 
-
 void APaintingPicker::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UPaintingGrid* PaintingGridWidget = Cast<UPaintingGrid>(PaintingGrid->GetUserWidgetObject());
-	if (!PaintingGridWidget) return;
+	UActionBar* ActionBarWidget = Cast<UActionBar>(ActionBar->GetUserWidgetObject());
+	if (ActionBarWidget)
+	{
+		ActionBarWidget->SetParentPicker(this);
+	}
 
 	UPainterSaveGameIndex* Index = UPainterSaveGameIndex::Load();
 	if (!Index) return;
+
+	RefreshSlots();
+}
+
+void APaintingPicker::RefreshSlots()
+{
+	UPaintingGrid* PaintingGridWidget = Cast<UPaintingGrid>(PaintingGrid->GetUserWidgetObject());
+	if (!PaintingGridWidget) return;
+
+	PaintingGridWidget->ClearPaintings();
 
 	int32 Counter = 0;
 	for (FString SlotName : UPainterSaveGameIndex::Load()->GetSlotNames())
@@ -47,7 +61,20 @@ void APaintingPicker::BeginPlay()
 		PaintingGridWidget->AddPainting(Counter, SlotName);
 		++Counter;
 	}
-
 }
 
+void APaintingPicker::ToggleDeleteMode()
+{
+    UE_LOG(LogTemp, Warning, TEXT("Delete clicked"));
+	UPaintingGrid* PaintingGridWidget = Cast<UPaintingGrid>(PaintingGrid->GetUserWidgetObject());
+	if (!PaintingGridWidget) return;
+
+	PaintingGridWidget->ClearPaintings();
+}
+
+void APaintingPicker::AddPainting()
+{
+	UPainterSaveGame* Painting = UPainterSaveGame::Create();
+	RefreshSlots();
+}
 

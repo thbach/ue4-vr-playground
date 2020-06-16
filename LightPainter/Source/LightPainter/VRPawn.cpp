@@ -3,7 +3,10 @@
 
 #include "VRPawn.h"
 #include "Engine/World.h"
+#include "PaintingGameMode.h"
 #include "Saving/PainterSaveGame.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/StereoLayerFunctionLibrary.h"
 #include "Components/InputComponent.h"
 
 // Sets default values
@@ -23,6 +26,10 @@ void AVRPawn::BeginPlay()
 {
 	Super::BeginPlay();
 
+
+	// Create new map
+	// UPainterSaveGame* Painting = UPainterSaveGame::Create();
+
 	if (HandControllerClass)
 	{
 		LeftHandController = GetWorld()->SpawnActor<AHandControllerBase>(HandControllerClass);
@@ -40,14 +47,6 @@ void AVRPawn::BeginPlay()
 			RightHandController->SetOwner(this);
 		}
 	}
-
-	// Create new map
-	UPainterSaveGame* Painting = UPainterSaveGame::Create();
-	if (Painting && Painting->Save())
-	{
-		CurrentSlotName = Painting->GetSlotName();
-	}
-
 }
 
 void AVRPawn::SetupPlayerInputComponent(UInputComponent*  PlayerInputComponent)
@@ -57,30 +56,15 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent*  PlayerInputComponent)
 	PlayerInputComponent->BindAction(TEXT("RightTrigger"), EInputEvent::IE_Pressed, this, &AVRPawn::RightTriggerPressed);
 	PlayerInputComponent->BindAction(TEXT("RightTrigger"), EInputEvent::IE_Released, this, &AVRPawn::RightTriggerReleased);
 	PlayerInputComponent->BindAction(TEXT("Save"), EInputEvent::IE_Released, this, &AVRPawn::Save);
-	PlayerInputComponent->BindAction(TEXT("Load"), EInputEvent::IE_Released, this, &AVRPawn::Load);
 
 }
 
 void AVRPawn::Save()
 {
-	UPainterSaveGame* Painting = UPainterSaveGame::Load(CurrentSlotName);
-	if (Painting)
-	{
-		Painting->SerializeFromWorld(GetWorld());
-		Painting->Save();
-	}
-}
-
-void AVRPawn::Load()
-{
-	UPainterSaveGame* Painting = UPainterSaveGame::Load(CurrentSlotName);
-	if (Painting)
-	{
-		Painting->DeserializeToWorld(GetWorld());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("no saves"));
-	}
+	auto GameMode = Cast<APaintingGameMode>(GetWorld()->GetAuthGameMode());
+	if (!GameMode) return;
+	GameMode->Save();
+    UStereoLayerFunctionLibrary::ShowSplashScreen();
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
 }
 

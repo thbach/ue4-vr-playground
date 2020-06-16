@@ -16,11 +16,16 @@ public:
 	// Sets default values for this actor's properties
 	APaintingPicker();
 
+	void ToggleDeleteMode();
+	void AddPainting();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
+	void RefreshSlots();
+
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* Root;
 

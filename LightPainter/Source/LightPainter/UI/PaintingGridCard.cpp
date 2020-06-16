@@ -17,5 +17,7 @@ void UPaintingGridCard::SetPaintingName(FString NewPaintingName)
 void UPaintingGridCard::CardButtonClicked()
 {
     UStereoLayerFunctionLibrary::ShowSplashScreen();
+
+    // refactor magic text
     UGameplayStatics::OpenLevel(GetWorld(), TEXT("Canvas"), true, "SlotName=" + PaintingName);
 }

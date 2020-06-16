@@ -45,11 +45,7 @@ private:
 	void RightTriggerReleased() { if (RightHandController) RightHandController->TriggerReleased(); }
 
 	void Save();
-	void Load();
 
 	// State
-
-	UPROPERTY()
-	FString CurrentSlotName;
 
 };
