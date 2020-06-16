@@ -47,4 +47,9 @@ private:
 	void Save();
 	void Load();
 
+	// State
+
+	UPROPERTY()
+	FString CurrentSlotName;
+
 };

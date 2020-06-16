@@ -27,10 +27,6 @@ void AUIPointerHandController::BeginPlay()
 {
     Super::BeginPlay();
 
-    if(WidgetInteractionComponent)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("CouldFind"));
-    }
 
 }
 
