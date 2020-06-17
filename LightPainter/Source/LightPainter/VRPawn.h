@@ -32,7 +32,9 @@ private:
 private:
 	// Config
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<AHandControllerBase> HandControllerClass;
+	TSubclassOf<AHandControllerBase> RightHandControllerClass;
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AHandControllerBase> LeftHandControllerClass;
 
 	// Children
 	UPROPERTY(VisibleAnywhere)
@@ -43,9 +45,11 @@ private:
 	// functions
 	void RightTriggerPressed() { if (RightHandController) RightHandController->TriggerPressed(); }
 	void RightTriggerReleased() { if (RightHandController) RightHandController->TriggerReleased(); }
-
-	void Save();
+	void PaginateRightAxisInput(float AxisValue);
+	void UpdateCurrentPage(int32 Offset);
 
 	// State
+	float PreviousAxisValue = 0;
+	float PaginationAxisThreshold = 0.8;
 
 };

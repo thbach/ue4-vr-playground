@@ -3,10 +3,9 @@
 
 #include "VRPawn.h"
 #include "Engine/World.h"
-#include "PaintingGameMode.h"
-#include "Saving/PainterSaveGame.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/StereoLayerFunctionLibrary.h"
+#include "UI/PaintingPicker.h"
+#include "EngineUtils.h"
 #include "Components/InputComponent.h"
 
 // Sets default values
@@ -30,16 +29,19 @@ void AVRPawn::BeginPlay()
 	// Create new map
 	// UPainterSaveGame* Painting = UPainterSaveGame::Create();
 
-	if (HandControllerClass)
+	if (LeftHandControllerClass)
 	{
-		LeftHandController = GetWorld()->SpawnActor<AHandControllerBase>(HandControllerClass);
+		LeftHandController = GetWorld()->SpawnActor<AHandControllerBase>(LeftHandControllerClass);
 		if (LeftHandController)
 		{
 			LeftHandController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 			LeftHandController->SetLeftHand(true);
 			LeftHandController->SetOwner(this);
 		}
-		RightHandController = GetWorld()->SpawnActor<AHandControllerBase>(HandControllerClass);
+	}
+	if (RightHandControllerClass)
+	{
+		RightHandController = GetWorld()->SpawnActor<AHandControllerBase>(RightHandControllerClass);
 		if (RightHandController)
 		{
 			RightHandController->AttachToComponent(GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
@@ -55,16 +57,28 @@ void AVRPawn::SetupPlayerInputComponent(UInputComponent*  PlayerInputComponent)
 
 	PlayerInputComponent->BindAction(TEXT("RightTrigger"), EInputEvent::IE_Pressed, this, &AVRPawn::RightTriggerPressed);
 	PlayerInputComponent->BindAction(TEXT("RightTrigger"), EInputEvent::IE_Released, this, &AVRPawn::RightTriggerReleased);
-	PlayerInputComponent->BindAction(TEXT("Save"), EInputEvent::IE_Released, this, &AVRPawn::Save);
-
+	PlayerInputComponent->BindAxis(TEXT("PaginateRight"), this, &AVRPawn::PaginateRightAxisInput);
 }
 
-void AVRPawn::Save()
+void AVRPawn::PaginateRightAxisInput(float AxisValue)
 {
-	auto GameMode = Cast<APaintingGameMode>(GetWorld()->GetAuthGameMode());
-	if (!GameMode) return;
-	GameMode->Save();
-    UStereoLayerFunctionLibrary::ShowSplashScreen();
-	UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainMenu"));
+	if (AxisValue > PaginationAxisThreshold && PreviousAxisValue < PaginationAxisThreshold)
+	{
+		UpdateCurrentPage(1);
+	}
+
+	if (AxisValue < -PaginationAxisThreshold && PreviousAxisValue > -PaginationAxisThreshold)
+	{
+		UpdateCurrentPage(-1);
+	}
+
+	PreviousAxisValue = AxisValue;
 }
 
+void AVRPawn::UpdateCurrentPage(int32 Offset)
+{
+	for (TActorIterator<APaintingPicker> PaintingPickerItr(GetWorld()); PaintingPickerItr; ++PaintingPickerItr )
+	{
+		PaintingPickerItr->UpdateCurrentPage(Offset);
+	}
+}
